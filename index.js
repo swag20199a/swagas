@@ -544,15 +544,31 @@ client.on('group-participants-update', async (anu) => {
 					if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
 					anu = await fetchJson(`https://alfians-api.herokuapp.com/api/ytv?url=${args[0]}`, {method: 'get'})
 					if (anu.error) return reply(anu.error)
-					teks = `*[AGUARDE] 🎧 Sua música está sendo baixada e processada.
+					teks = `*[AGUARDE] 🎥 Sua video está sendo processado.
 
 Titulo: ${anu.title}
-Tamanho:  * ${anu.filesize} *`
+Tamanho:  ${anu.filesize}
+Link Para Download ${anu.result}*`
 					thumb = await getBuffer(anu.thumb)
 					client.sendMessage(from, thumb, image, {quoted: mek, caption: teks})
 					buffer = await getBuffer(anu.result)
 					client.sendMessage(from, buffer, video, {mimetype: 'video/mp4', filename: `${anu.result}.mp4`, quoted: mek})
+					
 					break
+				case 'ytmp3':
+					if (args.length < 1) return reply('Urlnya mana um?')
+					if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
+					anu = await fetchJson(`https://alfians-api.herokuapp.com/api/yta?url=${args[0]}`, {method: 'get'})
+					if (anu.error) return reply(anu.error)
+					teks = `*[AGUARDE] 🎧 Sua música está sendo baixada e processada.
+
+Titulo: ${anu.title}
+Tamanho:  ${anu.filesize}
+Link Para Download ${anu.result}*`
+					thumb = await getBuffer(anu.thumb)
+					client.sendMessage(from, thumb, image, {quoted: mek, caption: teks})
+					buffer = await getBuffer(anu.result)
+						client.sendMessage(from, buffer, audio, {mimetype: 'audio/mp4', filename: `${anu.title}.mp3`, quoted: mek})
                 case 'text3d':
               	    if (args.length < 1) return reply('onde esta o texto irmao?')
                     teks = `${body.slice(8)}`
